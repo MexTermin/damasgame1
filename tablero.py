@@ -19,28 +19,9 @@ class tablero:
 
 
 
-    def lisInit(self,startList):
-        # ver=1
-        # for j in range(0,3):
-           
-        #     for i in range(1,8,2):
-                
-        #         startList[j][ver] = "D"
-        #         ver+=2
-        #     ver=0
-
-        # ver=1
-        # hor=0
-        # while True:
-        #     startList[hor][ver] = "D"
-        #     if hor == 3:
-        #         break
-        #     ver +=2
-  
-        #     if ver >=8 :
-        #         hor += 1
-        #         ver = 2
-
+    def lisInit(self,simbol,startList,start,end,step,row):
+        for i in range(start,end,step):
+            startList[row][i] = str(simbol)
         
         return startList
 
