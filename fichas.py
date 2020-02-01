@@ -1,15 +1,47 @@
+class fichaInvalida(Exception):
+    pass
+
+
+
 def fichamove(ficha,tomove,interfaz,player):
-    xpos = int(ficha[0])-1
-    ypos = int(ficha[2])
-    xnew = int(tomove[0])-1
-    ynew = int(tomove[2])
+
     if player == "n":
+        xpos = int(ficha[0])
+        ypos = int( convert(ficha[2].lower()) )
+        if interfaz[xpos][ypos] != "n":
+            raise fichaInvalida("Invalid tab")
+
+
+        if tomove.upper() == "L":
+            xnew = xpos-1
+            ynew = ypos-1 
+        elif tomove.upper() == "R":
+            xnew = xpos-1
+            ynew = ypos+1
+        else:
+            return "Invalid move"
         interfaz[xpos][ypos] = "."
         interfaz[xnew][ynew] = "n"
-    if player == "b":
+        player="b"
+
+
+    elif player == "b":
+        xpos = int(ficha[0])
+        ypos = int( convert(ficha[2].lower()) )
+        if interfaz[xpos][ypos] != "b":
+            raise fichaInvalida("Invalid tab")
+        if tomove.upper() == "L":
+            xnew = xpos+1
+            ynew = ypos-1 
+        elif tomove.upper() == "R":
+            xnew = xpos+1
+            ynew = ypos+1
+        else:
+            return "Invalid move"
         interfaz[xpos][ypos] = "."
         interfaz[xnew][ynew] = "b"
-    return interfaz
+        player="n"
+    return interfaz,player
     
 
 def convert(string):
@@ -53,9 +85,5 @@ def poss(lista):
                 listapos["n"].append( [(i+1,j),False] )
             elif lista[i][j] == "b":
                 listapos["b"].append( [(i+1,j),False] )
-
-
-
-
     return listapos
 
