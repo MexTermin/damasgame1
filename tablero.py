@@ -1,4 +1,6 @@
 class tablero:
+    # def __init__(self):
+    #     self.tablero =[]
 
     def vista(self,lista):
         # se encarga de crear la vista del tablero
@@ -25,6 +27,8 @@ class tablero:
             startList[row][i] = str(simbol)
         
         return startList
+
+        
 
 
 

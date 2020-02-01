@@ -1,5 +1,16 @@
-def fichamove():
-    pass
+def fichamove(ficha,tomove,interfaz,player):
+    xpos = int(ficha[0])-1
+    ypos = int(ficha[2])
+    xnew = int(tomove[0])-1
+    ynew = int(tomove[2])
+    if player == "n":
+        interfaz[xpos][ypos] = "."
+        interfaz[xnew][ynew] = "n"
+    if player == "b":
+        interfaz[xpos][ypos] = "."
+        interfaz[xnew][ynew] = "b"
+    return interfaz
+    
 
 def convert(string):
     """ regresa el valor de la conversion de los numero en str y los str en num """
@@ -26,16 +37,14 @@ def convert(string):
     return switcher[string]
 
 def vlibre(fichas):
-    for i in range( len(fichas["n"])  ):
+    for i in range(1, len(fichas["n"])  ):
         if fichas["n"][i][0][0]-1 != fichas["b"][i][0][0]  and  fichas["n"][i][0][1]-1 != fichas["b"][i][0][1]:
-            fichas["n"][i][1]=True
-            
-        return  fichas
+            fichas["n"][i][1]=True        
+        return  fichas   #["n"][i][0][0]-1,  fichas["n"][i][0][1]-1
     
 
 
 def poss(lista):
-
     """ Busca todas las posiciones de las fichas blancas y negras del tablero"""
     listapos =   {  "n":[],  "b":[]  }  
     for i in range(1,8):
