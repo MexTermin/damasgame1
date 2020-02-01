@@ -4,6 +4,7 @@ from os import system
 table = tablero()
 global mesa
 global interfaz
+
 jugadores = players()
 interfaz = table.crearTablero()
 interfaz = table.lisInit("b",interfaz,1,1)
@@ -38,15 +39,18 @@ def start():
     print(mesa)
     num = input("ingresa la ficha que deseas mover seguido de L (left) o R (right): ")
     num = num.split(" ")
+
     try:
         interfaz,jugadores.turno = fichamove( num[0], num[1] ,interfaz  ,jugadores.turno ) 
     except fichaInvalida as e:
         system("cls")
         input(str(e))
+    except movinvalido as e:
+         input(str(e))
     except:
         system("cls")
         input("debes ingresar la posicion de la ficha y luego a donde ira, ejemplo '6,1 L'")
-        
     start()
+    
 
 start()
