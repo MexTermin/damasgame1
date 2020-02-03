@@ -42,6 +42,7 @@ def start():
     num = num.split(" ")
     try:
         interfaz,jugadores.turno = fichamove( num[0], num[1] ,interfaz  ,jugadores.turno ) 
+
     except fichaInvalida as e:
         system("cls")
         input(str(e))

@@ -16,7 +16,7 @@ def fichamove(ficha,tomove,interfaz,player):
                 ynew = ypos-1 
             else:
                 if  interfaz[xpos-2][ypos-2] == ".":
-                    interfaz = eatleft((xpos,ypos),interfaz,"n") 
+                    interfaz = eatn((xpos,ypos),interfaz,"l") 
                     print(interfaz,"b")
                     return interfaz,"b"
                 else:
@@ -27,7 +27,7 @@ def fichamove(ficha,tomove,interfaz,player):
                 ynew = ypos+1
             else:
                 if  interfaz[xpos-2][ypos+2]  == ".":
-                    interfaz = eatright((xpos,ypos),interfaz,"n") 
+                    interfaz = eatn((xpos,ypos),interfaz,"r") 
                     print(interfaz,"b")
                     return interfaz,"b"
                 else:
@@ -43,11 +43,13 @@ def fichamove(ficha,tomove,interfaz,player):
                 raise fichaInvalida("Invalid tab")
             if tomove.upper() == "L":
                 if vlibre((xpos,ypos),interfaz,player) == "left" or  vlibre((xpos,ypos),interfaz,player) == "bot":
+                    print("\nPaso la verificacion\n")
                     xnew = xpos+1
                     ynew = ypos-1 
                 else:
-                    if interfaz[xpos-2] [ypos+2] == ".":
-                        interfaz = eatleft((xpos,ypos),interfaz,player)
+                    if interfaz[xpos+2][ypos-2] == ".":
+                        print("\nMovimiento de 2 pasos\n")
+                        interfaz = eatb((xpos,ypos),interfaz,"l")
                         return interfaz, "n"
                     else:
                         raise movinvalido("Esta ficha no se puede mover al left")
@@ -57,7 +59,7 @@ def fichamove(ficha,tomove,interfaz,player):
                     ynew = ypos+1
                 else:
                     if interfaz[xpos+2] [ypos+2] == ".":
-                        interfaz =  eatright((xpos,pos),interfaz,player)
+                        interfaz =  eatb((xpos,ypos),interfaz,"r")
              
                         return interfaz, "n"
                     raise movinvalido("Esta ficha no se puede mover al right")
@@ -180,29 +182,29 @@ def superEat(player,ficha,interfaz):
     
  """
 
-def eatleft(ficha,interfaz,player):
+def eatn(ficha,interfaz,player):
     #all = poss(interfaz)
-    if player == "n":
+    if player.upper() == "L":
 
         interfaz[ficha[0]] [ficha[1]] = "."
         interfaz[ficha[0]-1] [ficha[1]-1] = "."
         interfaz[ficha[0]-2] [ficha[1]-2] = "n"
 
-    elif player =="b":
-        interfaz[ficha[0]] [ficha[1]] = "."
-        interfaz[ficha[0]+1] [ficha[1]-1] = "."
-        interfaz[ficha[0]+2] [ficha[1]-2] = "b"
-    
-    
-    return interfaz  
-
-def eatright(ficha,interfaz,player):
-    if player == "n":
+    elif player.upper() == "R":
         interfaz[ficha[0]] [ficha[1]] = "."
         interfaz[ficha[0]-1] [ficha[1]+1] = "."
         interfaz[ficha[0]-2] [ficha[1]+2] = "n"
+    
+    return interfaz  
 
-    elif player == "b":
+def eatb(ficha,interfaz,player):
+
+    if player.upper() ==  "L":
+        interfaz[ficha[0]] [ficha[1]] = "."
+        interfaz[ficha[0]+1] [ficha[1]-1] = "."
+        interfaz[ficha[0]+2] [ficha[1]-2] = "b"
+
+    elif player.upper() == "R":
         interfaz[ficha[0]] [ficha[1]] = "."
         interfaz[ficha[0]+1] [ficha[1]+1] = "."
         interfaz[ficha[0]+2] [ficha[1]+2] = "b"
