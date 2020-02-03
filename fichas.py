@@ -15,13 +15,23 @@ def fichamove(ficha,tomove,interfaz,player):
                 xnew = xpos-1
                 ynew = ypos-1 
             else:
-                raise movinvalido("Esta ficha no se puede mover al left")
+                if  interfaz[xpos-2][ypos-2] == ".":
+                    interfaz = eatleft((xpos,ypos),interfaz,"n") 
+                    print(interfaz,"b")
+                    return interfaz,"b"
+                else:
+                    raise movinvalido("Esta ficha nos se puede mover al left")
         elif tomove.upper() == "R":
             if vlibre((xpos,ypos),interfaz,player) == "right" or vlibre((xpos,ypos),interfaz,player) == "bot":
                 xnew = xpos-1
                 ynew = ypos+1
             else:
-                raise movinvalido("Esta ficha no se puede mover al right")
+                if  interfaz[xpos-2][ypos+2]  == ".":
+                    interfaz = eatright((xpos,ypos),interfaz,"n") 
+                    print(interfaz,"b")
+                    return interfaz,"b"
+                else:
+                    raise movinvalido("Esta ficha no se puede mover al right")
         else:
             return "Invalid move"
         interfaz[xpos][ypos] = "."
@@ -36,12 +46,20 @@ def fichamove(ficha,tomove,interfaz,player):
                     xnew = xpos+1
                     ynew = ypos-1 
                 else:
-                    raise movinvalido("Esta ficha no se puede mover al left")
+                    if interfaz[xpos-2] [ypos+2] == ".":
+                        interfaz = eatleft((xpos,ypos),interfaz,player)
+                        return interfaz, "n"
+                    else:
+                        raise movinvalido("Esta ficha no se puede mover al left")
             elif tomove.upper() == "R":
                 if vlibre((xpos,ypos),interfaz,player) == "right" or vlibre((xpos,ypos),interfaz,player) == "bot":
                     xnew = xpos+1
                     ynew = ypos+1
                 else:
+                    if interfaz[xpos+2] [ypos+2] == ".":
+                        interfaz =  eatright((xpos,pos),interfaz,player)
+             
+                        return interfaz, "n"
                     raise movinvalido("Esta ficha no se puede mover al right")
             else:
                 return "Invalid move"
@@ -50,7 +68,6 @@ def fichamove(ficha,tomove,interfaz,player):
             player="n"
     return interfaz,player
     
-
 def convert(string):
     """ regresa el valor de la conversion de los numero en str y los str en num """
     switcher =  {
@@ -73,13 +90,13 @@ def vlibre(ficha,interfaz, player):
     # asignamos los valores que comparan si esta libre el camino segun sean para las fichas N o B
     if player == "n":
         # validamos si la ficha elegida pertenece al jugador
-        if interfaz[ficha[0]] [ficha[1]] =="n":
+        if interfaz[int(ficha[0])] [int(ficha[1])] =="n":
             x1,y1,x2,y2=-1,-1,-1,1
         else:
             return False
     if player == "b":
         #--------------------------------------------------
-        if interfaz[ficha[0]] [ficha[1]] =="b":
+        if interfaz[int(ficha[0])] [int(ficha[1])] =="b":
             x1,y1,x2,y2=1,-1,1,1
         else:
             return False       
@@ -100,7 +117,6 @@ def vlibre(ficha,interfaz, player):
     else:
         return False
 
-
 def poss(lista):
     """ Busca todas las posiciones de las fichas blancas y negras del tablero"""
     listapos =   {  "n":[],  "b":[]  }  
@@ -115,4 +131,86 @@ def poss(lista):
                 listapos["b"].append( (i,j) )
 
     return listapos
+
+def contrario(player):
+    if player == "n":
+        return "b"
+    if player == "b":
+        return "n"
+
+"""
+def superEat(player,ficha,interfaz):
+    xpos = ficha[0]
+    ypos = ficha[1]
+    if player == "n":
+        if player.upper() == "L":
+            if vlibre((xpos,ypos),interfaz,player) == "left" or  vlibre((xpos,ypos),interfaz,player) == "bot":
+                xnew = xpos - 1
+                ynew = ypos - 1 
+                zxnew = xnew - 1
+                zynew = ynew - 1
+        elif player.upper() == "R":
+            if vlibre((xpos,ypos),interfaz,player) == "right" or vlibre((xpos,ypos),interfaz,player) == "bot":
+                xnew = xpos-1
+                ynew = ypos+1
+                zxnew = xnew - 1
+                zynew = ynew + 1
+        interfaz[xpos][ypos] = "."
+        interfaz[xnew][ynew] = "."
+        interfaz[zxnew][zynew] = "n"
+
+    # elif player == "b":
+    #     if player.upper() == "L":
+    #         if vlibre((xpos,ypos),interfaz,player) == "left" or  vlibre((xpos,ypos),interfaz,player) == "bot":
+    #             xnew = xpos+1
+    #             ynew = ypos-1 
+    #             zxnew = xnew + 1
+    #             zynew = ynew - 1                   
+    #     elif player.upper() == "R":
+    #         if vlibre((xpos,ypos),interfaz,player) == "right" or vlibre((xpos,ypos),interfaz,player) == "bot":
+    #             xnew = xpos+1
+    #             ynew = ypos+1
+    #             zxnew = xnew + 1
+    #             zynew = ynew + 1    
+    #     interfaz[xpos][ypos] = "."
+    #     interfaz[xnew][ynew] = "."
+    #     interfaz[zxnew][zynew] = "b"
+    return interfaz
+
+    
+ """
+
+def eatleft(ficha,interfaz,player):
+    #all = poss(interfaz)
+    if player == "n":
+
+        interfaz[ficha[0]] [ficha[1]] = "."
+        interfaz[ficha[0]-1] [ficha[1]-1] = "."
+        interfaz[ficha[0]-2] [ficha[1]-2] = "n"
+
+    elif player =="b":
+        interfaz[ficha[0]] [ficha[1]] = "."
+        interfaz[ficha[0]+1] [ficha[1]-1] = "."
+        interfaz[ficha[0]+2] [ficha[1]-2] = "b"
+    
+    
+    return interfaz  
+
+def eatright(ficha,interfaz,player):
+    if player == "n":
+        interfaz[ficha[0]] [ficha[1]] = "."
+        interfaz[ficha[0]-1] [ficha[1]+1] = "."
+        interfaz[ficha[0]-2] [ficha[1]+2] = "n"
+
+    elif player == "b":
+        interfaz[ficha[0]] [ficha[1]] = "."
+        interfaz[ficha[0]+1] [ficha[1]+1] = "."
+        interfaz[ficha[0]+2] [ficha[1]+2] = "b"
+
+    return interfaz
+
+
+
+
+   
 
