@@ -4,8 +4,9 @@ from os import system
 table = tablero()
 global mesa
 global interfaz
-
 jugadores = players()
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! optimizar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 interfaz = table.crearTablero()
 interfaz = table.lisInit("b",interfaz,1,1)
 interfaz = table.lisInit("b",interfaz,2,2)
@@ -14,6 +15,8 @@ interfaz = table.lisInit("b",interfaz,1,3)
 interfaz = table.lisInit("n",interfaz,2,6)
 interfaz = table.lisInit("n",interfaz,1,7)
 interfaz = table.lisInit("n",interfaz,2,8)
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 def start():
     global mesa
@@ -30,28 +33,34 @@ def start():
             jugadores.turno="b"
             jugadores.player2="n"
         else:
-            system("cls")
+            #system("cls")
             input("Cabron te dije que elijas n o r, press enter to continue... ")
             start()
     mesa = table.vista(interfaz)
 
-    #system("cls")
+    system("cls")
     print("Es el turno de las fichas ",jugadores.turno)
     print(mesa)
-    num = input("ingresa la ficha que deseas mover seguido de L (left) o R (right): ")
-    num = num.split(" ")
-    try:
-        interfaz,jugadores.turno = fichamove( num[0], num[1] ,interfaz  ,jugadores.turno ) 
-
-    except fichaInvalida as e:
-        system("cls")
-        input(str(e))
-    except movinvalido as e:
-         input(str(e))
-    except:
-        system("cls")
-        input("debes ingresar la posicion de la ficha y luego a donde ira, ejemplo '6,1 L'")
     
+    direction, tabs = obligatoryEat(interfaz,jugadores.turno)
+    if direction != False:
+        interfaz, jugadores.turno = eat(tabs,interfaz,direction,jugadores.turno)
+
+
+    else:
+        num = input("ingresa la ficha que deseas mover seguido de L (left) o R (right): ")
+        num = num.split(" ")
+        try:
+            interfaz,jugadores.turno = fichamove( num[0], num[1] ,interfaz  ,jugadores.turno ) 
+        except fichaInvalida as e:
+            system("cls")
+            input(str(e))
+        except movinvalido as e:
+                input(str(e))
+        # except:
+        #     system("cls")
+        #     input("debes ingresar la posicion de la ficha y luego a donde ira, ejemplo '6,1 L'")
+
 
     start()
     
