@@ -1,8 +1,5 @@
+from exceptions import *
 # genera una excetion cuando ponen la hubiccion de una ficha invalida
-class fichaInvalida(Exception):
-    pass
-class movinvalido(Exception):
-    pass
 
 def fichamove(ficha,tomove,interfaz,player):
     xpos = int(ficha[0])
@@ -128,63 +125,70 @@ def counter(player):
     else:
         return False
 
-def eat(ficha,interfaz,direction,player):
+def eat(ficha,interface,direction,player):
     #all = poss(interfaz)
     if direction.upper() == "L":
-        input("You should eat the left tab {} 'L' ".format((ficha[0],ficha[1])))
+        #input( "You should eat the left tab {} 'L' ".format((ficha[0],ficha[1])))
         x1,y1,x2,y2 = -1,-1,-2,-2 
 
     elif direction.upper() == "R":
-        input("You should eat the Right tab {} 'R' ".format((ficha[0],ficha[1])))
+        #input( "You should eat the Right tab {} 'R' ".format((ficha[0],ficha[1])))
         x1,y1,x2,y2 = -1,1,-2,2
 
 
     elif direction.upper() ==  "LD":
-        input("You should eat the left down tab {} 'LD' ".format((ficha[0],ficha[1])))
+        #input( "You should eat the left down tab {} 'LD' ".format((ficha[0],ficha[1])))
         x1,y1,x2,y2 = 1,-1,2,-2
 
 
     elif direction.upper() == "RD":
-        input("You should eat the right down tab {} 'RD' ".format((ficha[0],ficha[1])))
+        #input( "You should eat the right down tab {} 'RD' ".format((ficha[0],ficha[1])))
         x1,y1,x2,y2 = 1,1,2,2
 
 
-    interfaz[ficha[0]] [ficha[1]] = "."
-    interfaz[ficha[0]+x1] [ficha[1]+y1] = "."
-    interfaz[ficha[0]+x2] [ficha[1]+y2] = player
-    print("\nLa ficha esta en, ", (ficha[0],ficha[1]))
-    print("\n La ficha se movio y comio en , ", (ficha[0]+x1,ficha[1]+y1))
-    print("\n La ficha quedo en la pos, ", (ficha[0]+x2,ficha[1]+y2))    
-    return interfaz,counter(player)
+    interface[ficha[0]] [ficha[1]] = "."
+    interface[ficha[0]+x1] [ficha[1]+y1] = "."
+    interface[ficha[0]+x2] [ficha[1]+y2] = player
+    # print("\nLa ficha esta en, ", (ficha[0],ficha[1]))
+    # print("\n La ficha se movio y comio en , ", (ficha[0]+x1,ficha[1]+y1))
+    # print("\n La ficha quedo en la pos, ", (ficha[0]+x2,ficha[1]+y2))
+    bot = obligatoryEat(interface,player)
+    if bot[0] != False:
+        direction= bot[0][0]
+        ficha = bot[0][1]
+        eat(ficha,interface,direction,player)
+    return interface,counter(player)
 
 def obligatoryEat(interface,player):
-    #listing = pos(interface)
-    # focus = False
+    food=[]
     for values in range(1,9):
         for content in range(1,9):
             if interface[values][content] == player:
                 if values  < 7 and content < 7:
                     if interface[values+1][content+1] == counter(interface[values][content]) and interface[values+2][content+2] == ".":
-                        #return eat((values+1,content+1),interface,"RD",player), counter(player)
-                        return "RD" ,[values,content]
+                        
+                        food.append ( ("RD" ,[values,content] ) )
 
-                if  values <8  and content >2:
+                if  values <7  and content >2:
                     if interface[values+1][content-1] == counter(interface[values][content]) and interface[values+2][content-2] == ".":
-                        #return eat((values+1,content-1),interface,"R",player), counter(player)
-                        return "LD", [values,content]
+                        
+                        food.append ( ("LD", [values,content]) )
 
                 if values <7 and content < 7:
                     if  interface[values-1][content+1] == counter(interface[values][content]) and interface[values-2][content+2] == ".":
-                        #return eat((values-1,content-1),interface,"L",player) , counter(player)
-                        return "R", [values,content]
+                        
+                        food.append ( ("R", [values,content]) )
                         
                 if values >2 and content >2:
                     if interface[values-1][content-1] == counter(interface[values][content]) and interface[values-2][content-2] == ".":
-                        #return eat((values-1,content+1),interface,"LD",player)   , counter(player)
-                        return "L", [values,content]
+                        
+                        food.append ( ("L", [values,content]) )
             else:
                 pass
-    return False, False
+    if len(food) >0:
+        return food
+    else:
+        return False,False
     
 def limites():
     pass

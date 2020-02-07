@@ -38,14 +38,25 @@ def start():
             start()
     mesa = table.vista(interfaz)
 
-    system("cls")
+    #system("cls")
     print("Es el turno de las fichas ",jugadores.turno)
     print(mesa)
     
-    direction, tabs = obligatoryEat(interfaz,jugadores.turno)
-    if direction != False:
-        interfaz, jugadores.turno = eat(tabs,interfaz,direction,jugadores.turno)
+    meal = obligatoryEat(interfaz,jugadores.turno)
+    if meal[0] != False:
+        if len(meal) == 1:
+            input( "You should eat the right down tab {} '{}' ".format(meal[0][1], meal[0][0] ) )
+            interfaz, jugadores.turno = eat(meal[0][1],interfaz,meal[0][0],jugadores.turno)
+        else:
+            print(meal)
+            for i in range( len(meal) ):
+                print(i,"  ",end = "") 
+            try:
 
+                answer = int(input("Select your answer: "))
+            except :
+                print("Tenes que elegir un numero del 0 al ", len(meal))
+            interfaz, jugadores.turno = eat(meal[answer][1],interfaz,meal[answer][0],jugadores.turno)
 
     else:
         num = input("ingresa la ficha que deseas mover seguido de L (left) o R (right): ")
@@ -59,7 +70,7 @@ def start():
                 input(str(e))
         # except:
         #     system("cls")
-        #     input("debes ingresar la posicion de la ficha y luego a donde ira, ejemplo '6,1 L'")
+        #     input("debes ingresar la posicion de la ficha y luego a donde ira, ejemplo '6,B L'")
 
 
     start()
